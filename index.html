@@ -29,6 +29,9 @@
     body.full option::before {
       content: "";
     }
+    select option:hover {
+      background-color: rgba(0, 128, 255, 0.2);
+    }
   </style>
   <script src="data.js"></script>
   <script src="main.js"></script>
@@ -37,8 +40,9 @@
 <h1>Bohemian National Polka</h1>
 
 <audio id="audio" src="Bohemian National Polka (with call).mp3" controls></audio>
-<br>
-<br>
+<br><br>
+<input type="checkbox" id="lead-in"><label for="lead-in">Lead-in<label>
+<br><br>
 
 <select id="section-select" multiple="multiple">
 </select>

@@ -15,6 +15,10 @@ var FULL = false;
 
 var timeline = FULL ? fullTimeline : condensedTimeline;
 
+var fullLeadInDuration = 4.6;
+var minimalLeadInDuration = 0.2;
+var fadeOutTime = 0.2;
+
 
 function go() {
   var numMarkers = timeline.length;
@@ -23,6 +27,7 @@ function go() {
     document.body.classList.add("full");
   }
 
+  var leadInElem = document.getElementById("lead-in");
   var select = document.getElementById("section-select");
   select.size = numMarkers;
 
@@ -65,9 +70,61 @@ function go() {
     }
   }
 
+  var startMarkerTime = 0;
+  var endMarkerTime = 0;
   function moveTimeToMarker(index) {
+    startMarkerTime = timeline[index].time;
+    rewindSection();
+  }
+
+  function rewindSection() {
+    audio.currentTime = startMarkerTime;
+    audio.currentTime -= leadInElem.checked ? fullLeadInDuration : minimalLeadInDuration;
+    adjustAudio();
+  }
+
+  function setPlayRange(startIndex, endIndex) {
     audio.pause();
-    audio.currentTime = timeline[index].time;
+    moveTimeToMarker(startIndex);
+    endMarkerTime = (endIndex + 1 < numMarkers) ? timeline[endIndex + 1].time : audio.duration;
+    console.log(startMarkerTime);
+    console.log(endMarkerTime);
+  }
+
+  function pause() {
+      audio.pause();
+      cancelAnimationFrame(animFrame);
+  }
+
+  function adjustAudio() {
+    if (!leadInElem.checked) {
+      audio.volume = 1;
+      return;
+    }
+
+    if (audio.currentTime < startMarkerTime) {
+      audio.volume = 1 - (startMarkerTime - audio.currentTime) / (2 * fullLeadInDuration);
+    } else if (audio.currentTime > endMarkerTime + fadeOutTime) {
+      pause();
+    } else if (audio.currentTime > endMarkerTime) {
+      audio.volume = 1 - (audio.currentTime - endMarkerTime) / (fadeOutTime);
+    } else {
+      audio.volume = 1;
+    }
+  }
+
+  function animFrame() {
+    requestAnimationFrame(animFrame); // Request before adjustAudio so that adjustAudio can pause.
+    adjustAudio();
+  }
+
+  function playpause() {
+    if (audio.paused) {
+      audio.play();
+      requestAnimationFrame(animFrame);
+    } else {
+      pause();
+    }
   }
 
   // Selects all options in the range.
@@ -76,7 +133,7 @@ function go() {
     for (var i = first; i <= last; i++) {
       options[i].selected = true;
     };
-    moveTimeToMarker(first);
+    setPlayRange(first, last);
   }
 
   select.addEventListener("change", function() {
@@ -106,7 +163,7 @@ function go() {
     var preventDefault = true;
     switch (event.keyCode) {
       case mocuteKeyCodes.START.down:
-        audio.paused ? audio.play() : audio.pause();
+        playpause();
         break;
 
       case mocuteKeyCodes.A.down: shiftRange(-1, -1); break;
@@ -117,9 +174,9 @@ function go() {
 
       case mocuteKeyCodes.B.down: shiftRange(0, 1);   break;
 
-      case mocuteKeyCodes.SELECT.down:
-        moveTimeToMarker(getFirst());
-        break;
+      case mocuteKeyCodes.CIRCLE_LEFT.down: leadInElem.checked = !leadInElem.checked; break;
+
+      case mocuteKeyCodes.SELECT.down: rewindSection(); break;
       default:
         preventDefault = false;
         break;
@@ -129,6 +186,8 @@ function go() {
       event.preventDefault();
     }
   });
+
+  leadInElem.checked = true;
 
   setRange(0, 0);
 }
