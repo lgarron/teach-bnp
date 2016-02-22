@@ -11,26 +11,41 @@ var mocuteKeyCodes = {
   CIRCLE_LEFT:  {"down":  88, "hold":  40, "up":  90}  // Also generates 186 between down and hold
 };
 
-var timeline = fullTimeline;
+var FULL = false;
+
+var timeline = FULL ? fullTimeline : condensedTimeline;
 
 
 function go() {
   var numMarkers = timeline.length;
+
+  if (FULL) {
+    document.body.classList.add("full");
+  }
 
   var select = document.getElementById("section-select");
   select.size = numMarkers;
 
   var audio = document.getElementById("audio");
 
+
   var options = [];
+  var currentSectionName = "";
+  var currentOptGroup;
   for (var marker of timeline) {
+    if (FULL && currentSectionName !== marker.section) {
+      currentOptGroup = document.createElement("optgroup");
+      currentOptGroup.label = marker.section;
+      currentSectionName = marker.section;
+      select.appendChild(currentOptGroup);
+    }
 
     var option = document.createElement("option");
     option.value = marker.time;
     option.textContent = marker.name;
 
     options.push(option);
-    select.appendChild(option);
+    (FULL ? currentOptGroup : select).appendChild(option);
   }
 
   function getFirst() {
@@ -65,7 +80,7 @@ function go() {
   }
 
   select.addEventListener("change", function() {
-    setRange(first(), last());
+    setRange(getFirst(), getLast());
   });
 
   function clip(index) {
@@ -87,7 +102,8 @@ function go() {
     setRange(first, last);
   }
 
-  window.addEventListener("keydown", function() {
+  window.addEventListener("keydown", function(event) {
+    var preventDefault = true;
     switch (event.keyCode) {
       case mocuteKeyCodes.START.down:
         audio.paused ? audio.play() : audio.pause();
@@ -105,7 +121,12 @@ function go() {
         moveTimeToMarker(getFirst());
         break;
       default:
-        console.log("Unassigned key code:", event.keyCode)
+        preventDefault = false;
+        break;
+    }
+
+    if (preventDefault) {
+      event.preventDefault();
     }
   });
 

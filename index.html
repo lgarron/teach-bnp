@@ -10,9 +10,24 @@
     select {
       font-size: 1.25em;
       overflow: hidden;
+      border: none;
+    }
+    body.full optgroup {
+      padding: 0.1em;
+      font-size: 1.25em;
     }
     option {
-      padding: 0.2em 1em;
+      font-size: 1.5em;
+      padding: 0em 1em;
+    }
+    body.full option {
+      font-size: 0.66em;
+      padding: 0.2em 0.5em;
+      display: inline;
+      text-decoration: underline;
+    }
+    body.full option::before {
+      content: "";
     }
   </style>
   <script src="data.js"></script>
