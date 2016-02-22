@@ -169,6 +169,7 @@ function go() {
           play();
         } else {
           pause();
+          rewindSection();
         }
         break;
 
