@@ -202,15 +202,3 @@ function go() {
 }
 
 window.addEventListener("load", go);
-
-// var optionsToSelect = ['One', 'three'];
-// var select = document.getElementById( 'choice' );
-
-// for ( var i = 0, l = select.options.length, o; i < l; i++ )
-// {
-//   o = select.options[i];
-//   if ( optionsToSelect.indexOf( o.text ) != -1 )
-//   {
-//     o.selected = true;
-//   }
-// }
