@@ -19,9 +19,17 @@ var fullLeadInDuration = 4.6;
 var minimalLeadInDuration = 0.2;
 var fadeOutTime = 1.3;
 
+var wavesurfer;
 
 function go() {
   var numMarkers = timeline.length;
+
+  wavesurfer = WaveSurfer.create({
+    container: '#waveform',
+    waveColor: '#AAAAAA',
+    progressColor: '#888888'
+  });
+  wavesurfer.load('Bohemian National Polka (with call).mp3');
 
   if (FULL) {
     document.body.classList.add("full");
@@ -31,8 +39,6 @@ function go() {
   var selectionOnlyElem = document.getElementById("selection-only");
   var select = document.getElementById("section-select");
   select.size = numMarkers;
-
-  var audio = document.getElementById("audio");
 
 
   var options = [];
@@ -79,38 +85,40 @@ function go() {
   }
 
   function rewindSection() {
-    audio.currentTime = startMarkerTime;
-    audio.currentTime -= leadInElem.checked ? fullLeadInDuration : minimalLeadInDuration;
+    wavesurfer.seekAndCenter(startMarkerTime / wavesurfer.getDuration());
+    wavesurfer.skipBackward(leadInElem.checked ? fullLeadInDuration : minimalLeadInDuration);
     adjustAudio();
   }
 
   function setPlayRange(startIndex, endIndex) {
-    audio.pause();
+    pause();
     moveTimeToMarker(startIndex);
-    endMarkerTime = (endIndex + 1 < numMarkers) ? timeline[endIndex + 1].time : audio.duration;
+    endMarkerTime = (endIndex + 1 < numMarkers) ? timeline[endIndex + 1].time : wavesurfer.getDuration();
     console.log(startMarkerTime);
     console.log(endMarkerTime);
   }
 
   function play() {
-      audio.play();
+      wavesurfer.play();
       requestAnimationFrame(animFrame);
   }
 
   function pause() {
-      audio.pause();
-      cancelAnimationFrame(animFrame);
+    if (wavesurfer.isPlaying()) {
+      wavesurfer.pause();
+    }
+    cancelAnimationFrame(animFrame);
   }
 
   function adjustAudio() {
-    if (audio.currentTime < startMarkerTime) {
-      audio.volume = 1 - (startMarkerTime - audio.currentTime) / (2 * fullLeadInDuration);
-    } else if (selectionOnlyElem.checked && audio.currentTime > endMarkerTime + fadeOutTime) {
+    if (wavesurfer.getCurrentTime() < startMarkerTime) {
+      wavesurfer.setVolume(1 - (startMarkerTime - wavesurfer.getCurrentTime()) / (2 * fullLeadInDuration));
+    } else if (selectionOnlyElem.checked && wavesurfer.getCurrentTime() > endMarkerTime + fadeOutTime) {
       pause();
-    } else if (selectionOnlyElem.checked && audio.currentTime > endMarkerTime) {
-      audio.volume = 1 - (audio.currentTime - endMarkerTime) / (fadeOutTime);
+    } else if (selectionOnlyElem.checked && wavesurfer.getCurrentTime() > endMarkerTime) {
+      wavesurfer.setVolume(1 - (wavesurfer.getCurrentTime() - endMarkerTime) / (fadeOutTime));
     } else {
-      audio.volume = 1;
+      wavesurfer.setVolume(1);
     }
   }
 
@@ -156,7 +164,7 @@ function go() {
     var preventDefault = true;
     switch (event.keyCode) {
       case mocuteKeyCodes.START.down:
-        if (audio.paused) {
+        if (!wavesurfer.isPlaying()) {
           rewindSection();
           play();
         } else {
@@ -165,7 +173,7 @@ function go() {
         break;
 
       case mocuteKeyCodes.SELECT.down:
-        if (audio.paused) {
+        if (!wavesurfer.isPlaying()) {
           play();
         } else {
           pause();
@@ -175,6 +183,7 @@ function go() {
       case mocuteKeyCodes.Y.down: shiftRange(-1, -1); break;
 
       case mocuteKeyCodes.A.down: shiftRange(1, 1);   break;
+      case mocuteKeyCodes.A.hold: break;
 
       case mocuteKeyCodes.B.down: shiftRange(0, -1);  break;
 
