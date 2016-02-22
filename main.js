@@ -5,10 +5,10 @@ var mocuteKeyCodes = {
   Y:            {"down":  74, "hold": 189, "up":  78},
   START:        {"down":  76, "hold": 219, "up":  86},
   SELECT:       {"down":  79, "hold": 187, "up":  71},
-  CIRCLE_UP:    {"down":  65, "hold":  37, "up":  81}, // Also generates 222 between down and hold
-  CIRCLE_RIGHT: {"down":  78, "hold":  38, "up":  69}, // Also generates 220 between down and hold
-  CIRCLE_DOWN:  {"down":  68, "hold":  39, "up":  67}, // Also generates 220 between down and hold
-  CIRCLE_LEFT:  {"down":  88, "hold":  40, "up":  90}  // Also generates 186 between down and hold
+  CIRCLE_DOWN:  {"down":  65, "hold":  37, "up":  81}, // Also generates 222 between down and hold
+  CIRCLE_LEFT:  {"down":  87, "hold":  38, "up":  69}, // Also generates 220 between down and hold
+  CIRCLE_UP:    {"down":  68, "hold":  39, "up":  67}, // Also generates 220 between down and hold
+  CIRCLE_RIGHT: {"down":  88, "hold":  40, "up":  90}  // Also generates 186 between down and hold
 };
 
 var FULL = false;
@@ -91,6 +91,11 @@ function go() {
     console.log(endMarkerTime);
   }
 
+  function play() {
+      audio.play();
+      requestAnimationFrame(animFrame);
+  }
+
   function pause() {
       audio.pause();
       cancelAnimationFrame(animFrame);
@@ -116,15 +121,6 @@ function go() {
   function animFrame() {
     requestAnimationFrame(animFrame); // Request before adjustAudio so that adjustAudio can pause.
     adjustAudio();
-  }
-
-  function playpause() {
-    if (audio.paused) {
-      audio.play();
-      requestAnimationFrame(animFrame);
-    } else {
-      pause();
-    }
   }
 
   // Selects all options in the range.
@@ -160,23 +156,36 @@ function go() {
   }
 
   window.addEventListener("keydown", function(event) {
+    console.log(event.keyCode);
     var preventDefault = true;
     switch (event.keyCode) {
       case mocuteKeyCodes.START.down:
-        playpause();
+        if (audio.paused) {
+          rewindSection();
+          play();
+        } else {
+          pause();
+        }
         break;
 
-      case mocuteKeyCodes.A.down: shiftRange(-1, -1); break;
+      case mocuteKeyCodes.SELECT.down:
+        if (audio.paused) {
+          play();
+        } else {
+          pause();
+        }
+        break;
 
-      case mocuteKeyCodes.Y.down: shiftRange(1, 1);   break;
+      case mocuteKeyCodes.Y.down: shiftRange(-1, -1); break;
 
-      case mocuteKeyCodes.X.down: shiftRange(0, -1);  break;
+      case mocuteKeyCodes.A.down: shiftRange(1, 1);   break;
 
-      case mocuteKeyCodes.B.down: shiftRange(0, 1);   break;
+      case mocuteKeyCodes.B.down: shiftRange(0, -1);  break;
+
+      case mocuteKeyCodes.X.down: shiftRange(0, 1);   break;
 
       case mocuteKeyCodes.CIRCLE_LEFT.down: leadInElem.checked = !leadInElem.checked; break;
 
-      case mocuteKeyCodes.SELECT.down: rewindSection(); break;
       default:
         preventDefault = false;
         break;
