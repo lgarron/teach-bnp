@@ -32,6 +32,14 @@
     select option:hover {
       background-color: rgba(0, 128, 255, 0.2);
     }
+    .controls {
+      color: rgba(0, 0, 0, 0.5);
+      text-align: left;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      padding: 1em;
+    }
   </style>
   <script src="data.js"></script>
   <script src="main.js"></script>
@@ -47,6 +55,17 @@
 
 <select id="section-select" multiple="multiple">
 </select>
+
+<br><br>
+<pre class="controls">Controls
+
+START - play from/reset to start of range
+SELECT - pause/play
+Y/A - start of range
+B/X - length of range
+CIRCLE LEFT - toggle lead-in
+CIRCLE RIGHT - toggle selection-only
+</pre>
 
 </body>
 </html>
