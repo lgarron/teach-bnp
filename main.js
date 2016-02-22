@@ -190,7 +190,10 @@ function go() {
 
       case mocuteKeyCodes.X.down: shiftRange(0, 1);   break;
 
-      case mocuteKeyCodes.CIRCLE_LEFT.down: leadInElem.checked = !leadInElem.checked; break;
+      case mocuteKeyCodes.CIRCLE_LEFT.down:
+        leadInElem.checked = !leadInElem.checked;
+        rewindSection();
+        break;
       case mocuteKeyCodes.CIRCLE_RIGHT.down: selectionOnlyElem.checked = !selectionOnlyElem.checked; break;
 
       default:
