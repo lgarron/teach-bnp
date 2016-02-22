@@ -17,7 +17,7 @@ var timeline = FULL ? fullTimeline : condensedTimeline;
 
 var fullLeadInDuration = 4.6;
 var minimalLeadInDuration = 0.2;
-var fadeOutTime = 0.2;
+var fadeOutTime = 1.3;
 
 
 function go() {
@@ -28,6 +28,7 @@ function go() {
   }
 
   var leadInElem = document.getElementById("lead-in");
+  var selectionOnlyElem = document.getElementById("selection-only");
   var select = document.getElementById("section-select");
   select.size = numMarkers;
 
@@ -102,16 +103,11 @@ function go() {
   }
 
   function adjustAudio() {
-    if (!leadInElem.checked) {
-      audio.volume = 1;
-      return;
-    }
-
     if (audio.currentTime < startMarkerTime) {
       audio.volume = 1 - (startMarkerTime - audio.currentTime) / (2 * fullLeadInDuration);
-    } else if (audio.currentTime > endMarkerTime + fadeOutTime) {
+    } else if (selectionOnlyElem.checked && audio.currentTime > endMarkerTime + fadeOutTime) {
       pause();
-    } else if (audio.currentTime > endMarkerTime) {
+    } else if (selectionOnlyElem.checked && audio.currentTime > endMarkerTime) {
       audio.volume = 1 - (audio.currentTime - endMarkerTime) / (fadeOutTime);
     } else {
       audio.volume = 1;
@@ -185,6 +181,7 @@ function go() {
       case mocuteKeyCodes.X.down: shiftRange(0, 1);   break;
 
       case mocuteKeyCodes.CIRCLE_LEFT.down: leadInElem.checked = !leadInElem.checked; break;
+      case mocuteKeyCodes.CIRCLE_RIGHT.down: selectionOnlyElem.checked = !selectionOnlyElem.checked; break;
 
       default:
         preventDefault = false;
@@ -197,6 +194,7 @@ function go() {
   });
 
   leadInElem.checked = true;
+  selectionOnlyElem.checked = true;
 
   setRange(0, 0);
 }
