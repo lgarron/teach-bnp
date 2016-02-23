@@ -36,19 +36,19 @@ var fullTimeline = [
 ];
 
 var condensedTimeline = [
-  {time: 0.00000,        name: "Call"},
-  {time: 5.88002,        name: "Bows"},
-  {time: 10.65857,       name: "Promenade"},
-  {time: 29.06471,       name: "In and Out"},
-  {time: 47.37342,       name: "Rollaway"},
-  {time: 52.00233,       name: "Pivots and Polkas"},
-  {time: 61.26574,       name: "Redowacka"},
-  {time: 79.69061,       name: "Left and Right"},
-  {time: 88.85968,       name: "Genuflection"},
-  {time: 98.0618,        name: "Rollaway"},
-  {time: 102.79014, name: "Promenade"},
-  {time: 120.93849, name: "In and Out"},
-  {time: 138.99464, name: "Rollaway"},
-  {time: 143.62667, name: "Pivots and Polkas"},
-  {time: 152.79387, name: "Bows"}
+  {time: 0.00000,        name: "1 – Call"},
+  {time: 5.88002,        name: "1 – Bows"},
+  {time: 10.65857,       name: "1 – Promenade"},
+  {time: 29.06471,       name: "2 – In and Out"},
+  {time: 47.37342,       name: "2 – Rollaway"},
+  {time: 52.00233,       name: "3 – Pivots and Polkas"},
+  {time: 61.26574,       name: "4 – Redowacka"},
+  {time: 79.69061,       name: "5 – Left and Right"},
+  {time: 88.85968,       name: "5 – Genuflection"},
+  {time: 98.0618,        name: "5 – Rollaway"},
+  {time: 102.79014,      name: "1 – Promenade"},
+  {time: 120.93849,      name: "2 – In and Out"},
+  {time: 138.99464,      name: "2 – Rollaway"},
+  {time: 143.62667,      name: "3 – Pivots and Polkas"},
+  {time: 152.79387,      name: "X – Bows"}
 ];
