@@ -11,6 +11,11 @@ var mocuteKeyCodes = {
   CIRCLE_RIGHT: {"down":  88, "hold":  40, "up":  90}  // Also generates 186 between down and hold
 };
 
+
+var keyboardKeyCodes = {
+  "ENTER": 13
+}
+
 var FULL = false;
 
 var timeline = FULL ? fullTimeline : condensedTimeline;
@@ -173,7 +178,9 @@ function go() {
         }
         break;
 
+      case keyboardKeyCodes.ENTER:
       case mocuteKeyCodes.SELECT.down:
+      console.log(wavesurfer.isPlaying());
         if (!wavesurfer.isPlaying()) {
           play();
         } else {
