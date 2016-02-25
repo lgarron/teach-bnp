@@ -188,14 +188,30 @@ function go() {
         }
         break;
 
-      case mocuteKeyCodes.Y.down: shiftRange(-1, -1); break;
+      case mocuteKeyCodes.Y.down:
+        if (!wavesurfer.isPlaying()) {
+          shiftRange(-1, -1);
+        }
+        break;
 
-      case mocuteKeyCodes.A.down: shiftRange(1, 1);   break;
+      case mocuteKeyCodes.A.down:
+        if (!wavesurfer.isPlaying()) {
+          shiftRange(1, 1);
+        }
+        break;
       case mocuteKeyCodes.A.hold: break;
 
-      case mocuteKeyCodes.B.down: shiftRange(0, -1);  break;
+      case mocuteKeyCodes.B.down:
+        if (!wavesurfer.isPlaying()) {
+          shiftRange(0, -1);
+        }
+        break;
 
-      case mocuteKeyCodes.X.down: shiftRange(0, 1);   break;
+      case mocuteKeyCodes.X.down:
+        if (!wavesurfer.isPlaying()) {
+          shiftRange(0, 1);
+        }
+        break;
 
       case mocuteKeyCodes.CIRCLE_LEFT.down:
         leadInElem.checked = !leadInElem.checked;
