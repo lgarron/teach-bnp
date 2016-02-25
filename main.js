@@ -100,8 +100,6 @@ function go() {
     pause();
     moveTimeToMarker(startIndex);
     endMarkerTime = (endIndex + 1 < numMarkers) ? timeline[endIndex + 1].time : wavesurfer.getDuration();
-    console.log(startMarkerTime);
-    console.log(endMarkerTime);
   }
 
   function play() {
