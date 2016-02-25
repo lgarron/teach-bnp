@@ -10,7 +10,6 @@
     select {
       font-size: 1.25em;
       overflow: hidden;
-      border: none;
     }
     body.full optgroup {
       padding: 0.1em;
@@ -40,6 +39,12 @@
       bottom: 0;
       padding: 1em;
     }
+    .checkboxes {
+      font-size: 150%;
+    }
+    .checkboxes input {
+      vertical-align: middle;
+    }
   </style>
   <script src="./lib/wavesurfer.min.js"></script>
   <script src="data.js"></script>
@@ -51,10 +56,12 @@
 <div id="waveform">
 </div>
 
-<br><br>
-<input type="checkbox" id="lead-in"><label for="lead-in">Lead-in<label>
-<input type="checkbox" id="selection-only"><label for="selection-only">Halt at end of selection<label>
-<br><br>
+
+<div class="checkboxes">
+  <input type="checkbox" id="lead-in"> <label for="lead-in">Lead-in</label><br>
+  <input type="checkbox" id="selection-only"> <label for="selection-only">Halt at end of selection</label>
+</div>
+<br>
 
 <select id="section-select" multiple="multiple">
 </select>
