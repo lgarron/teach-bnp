@@ -205,6 +205,11 @@ function go() {
         }
         break;
 
+      case 38:
+      case 40:
+        // More to intercept.
+        break;
+
       case mocuteKeyCodes.B.down:
         if (!wavesurfer.isPlaying()) {
           shiftRange(0, -1);
