@@ -13,6 +13,7 @@ var mocuteKeyCodes = {
 
 
 var keyboardKeyCodes = {
+  "BACKSPACE": 8,
   "ENTER": 13
 }
 
@@ -165,7 +166,6 @@ function go() {
   }
 
   window.addEventListener("keydown", function(event) {
-    console.log(event.keyCode);
     var preventDefault = true;
     switch (event.keyCode) {
       case mocuteKeyCodes.START.down:
@@ -180,7 +180,6 @@ function go() {
 
       case keyboardKeyCodes.ENTER:
       case mocuteKeyCodes.SELECT.down:
-      console.log(wavesurfer.isPlaying());
         if (!wavesurfer.isPlaying()) {
           play();
         } else {
@@ -199,7 +198,14 @@ function go() {
           shiftRange(1, 1);
         }
         break;
-      case mocuteKeyCodes.A.hold: break;
+
+      case keyboardKeyCodes.BACKSPACE:
+        // Intercept in order to preventDefault().
+        // Otherwise, pressing the key on the remote will navigate back.
+        if (mocuteKeyCodes.A.hold !== keyboardKeyCodes.BACKSPACE) {
+          console.error("Expected a collision between mocuteKeyCodes.A.hold and backspace.")
+        }
+        break;
 
       case mocuteKeyCodes.B.down:
         if (!wavesurfer.isPlaying()) {
@@ -215,12 +221,14 @@ function go() {
 
       case mocuteKeyCodes.CIRCLE_LEFT.down:
         leadInElem.checked = !leadInElem.checked;
-
         if (!wavesurfer.isPlaying()) {
           rewindSection();
         }
         break;
-      case mocuteKeyCodes.CIRCLE_RIGHT.down: selectionOnlyElem.checked = !selectionOnlyElem.checked; break;
+
+      case mocuteKeyCodes.CIRCLE_RIGHT.down:
+        selectionOnlyElem.checked = !selectionOnlyElem.checked;
+        break;
 
       default:
         preventDefault = false;
