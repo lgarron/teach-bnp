@@ -215,7 +215,10 @@ function go() {
 
       case mocuteKeyCodes.CIRCLE_LEFT.down:
         leadInElem.checked = !leadInElem.checked;
-        rewindSection();
+
+        if (!wavesurfer.isPlaying()) {
+          rewindSection();
+        }
         break;
       case mocuteKeyCodes.CIRCLE_RIGHT.down: selectionOnlyElem.checked = !selectionOnlyElem.checked; break;
 
